@@ -16,8 +16,7 @@ app.use(express.json())
 const dbFile = './db/db.json'
 
 // test data
-let noteList = fs.existsSync(dbFile) ? JSON.parse(fs.readFileSync(dbFile)) : 
-[{id: "0000-0000-0000-0000", title: 'note1', text: 'note1 text'}]
+let noteList = fs.existsSync(dbFile) ? JSON.parse(fs.readFileSync(dbFile)) : []
 
 
 // Endpoints
@@ -34,21 +33,24 @@ app.get('*', function(req, res){
 
 // read db.json file and return all saved notes
 app.get('/api/notes', function(req, res){
-    //console.log(noteList)
-    res.json(noteList)
+    console.log(noteList)
+    res.send({message: "NOTETAKER"})
 })
 
 // add a new notes to db.json
 app.post('/api/notes', function(req, res){
-    res.send()
+    
+    noteList.push(req.body)
+    console.log(noteList)
+    res.send(req.body)
 })
 
 // should delete note based on id
-app.delete('api/notes/:id', function(req, res){
-    noteList = []
-    //fs.writeFileSync(dbFile, JSON.stringify(noteList))
-    res.send({message: 'Oops! Deleted all notes.'})
-})
+// app.delete('api/notes/:id', function(req, res){
+//     noteList = []
+//     fs.writeFileSync(dbFile, JSON.stringify(noteList))
+//     res.send({message: 'Oops! Deleted all notes.'})
+// })
 
 // Listener
 app.listen(PORT, function(){
