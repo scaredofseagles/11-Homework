@@ -3,6 +3,7 @@ const uuid = require('uuid')
 const fs = require('fs')
 const app = express()
 const path = require('path')
+//import { v4 as uuidv4 } from uuid
 
 const PORT = process.env.PORT || 3000
 
@@ -34,16 +35,18 @@ app.get('*', function(req, res){
 // read db.json file and return all saved notes
 app.get('/api/notes', function(req, res){
     console.log(noteList)
-    res.send(noteList)
+    res.json(noteList)
 })
 
 // add a new notes to db.json
 app.post('/api/notes', function(req, res){
-    
-    noteList.push(req.body)
+    let id = uuid.v4()
+    let newNote = req.body
+    newNote.id = id
+    noteList.push(newNote)
     fs.writeFileSync(dbFile, JSON.stringify(noteList), "utf-8")
-    console.log(noteList)
-    res.send(req.body)
+    console.log(newNote)
+    res.send(newNote)
 })
 
 // should delete note based on id
