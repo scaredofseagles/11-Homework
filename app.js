@@ -34,23 +34,24 @@ app.get('*', function(req, res){
 // read db.json file and return all saved notes
 app.get('/api/notes', function(req, res){
     console.log(noteList)
-    res.send({message: "NOTETAKER"})
+    res.send(noteList)
 })
 
 // add a new notes to db.json
 app.post('/api/notes', function(req, res){
     
     noteList.push(req.body)
+    fs.writeFileSync(dbFile, JSON.stringify(noteList), "utf-8")
     console.log(noteList)
     res.send(req.body)
 })
 
 // should delete note based on id
-// app.delete('api/notes/:id', function(req, res){
-//     noteList = []
-//     fs.writeFileSync(dbFile, JSON.stringify(noteList))
-//     res.send({message: 'Oops! Deleted all notes.'})
-// })
+app.delete('api/notes/:id', function(req, res){
+    noteList = []
+    fs.writeFileSync(dbFile, JSON.stringify(noteList))
+    res.send({message: 'Oops! Deleted all notes.'})
+})
 
 // Listener
 app.listen(PORT, function(){
