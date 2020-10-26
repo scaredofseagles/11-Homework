@@ -17,9 +17,9 @@ app.use(express.json())
 const dbFile = './db/db.json'
 
 // test data
-let noteList = fs.existsSync(dbFile) ? JSON.parse(fs.readFileSync(dbFile)) : []
+//let noteList = fs.existsSync(dbFile) ? JSON.stringify(fs.readFileSync(dbFile)) : []
 
-
+let noteList = []
 // Endpoints
 
 // html routes
@@ -34,8 +34,9 @@ app.get('*', function(req, res){
 
 // read db.json file and return all saved notes
 app.get('/api/notes', function(req, res){
-    console.log(noteList)
-    res.json(noteList)
+    let readFile = JSON.stringify(fs.readFileSync(dbFile))
+    console.log(readFile)
+    res.send(noteList)
 })
 
 // add a new notes to db.json
@@ -44,16 +45,16 @@ app.post('/api/notes', function(req, res){
     let newNote = req.body
     newNote.id = id
     noteList.push(newNote)
-    fs.writeFileSync(dbFile, JSON.stringify(noteList), "utf-8")
-    console.log(newNote)
-    res.send(newNote)
+    //fs.writeFileSync(dbFile, JSON.stringify(noteList), "utf-8")
+    console.log(noteList)
+    res.json(noteList)
 })
 
 // should delete note based on id
 app.delete('api/notes/:id', function(req, res){
-    noteList = []
-    fs.writeFileSync(dbFile, JSON.stringify(noteList))
-    res.send({message: 'Oops! Deleted all notes.'})
+    let deleteId = req.params.id
+    noteList = noteList.filter(note => note.id !==deleteId)
+    res.send({message: 'Deleted note'})
 })
 
 // Listener
