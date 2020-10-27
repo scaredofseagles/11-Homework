@@ -28,14 +28,14 @@ app.get('/notes', function(req, res){
     res.sendFile(__dirname + "/public/notes.html")
 })
 
-app.get('*', function(req, res){
-    res.sendFile(__dirname + "/public/index.html")
-})
+// app.get('/', function(req, res){
+//     res.sendFile(__dirname + "/public/index.html")
+// })
 
 // read db.json file and return all saved notes
 app.get('/api/notes', function(req, res){
-    let readFile = JSON.stringify(fs.readFileSync(dbFile))
-    console.log(readFile)
+    //let readFile = JSON.parse(fs.readFileSync(dbFile))
+    //console.warn(xhr.responseText)
     res.send(noteList)
 })
 
@@ -46,12 +46,12 @@ app.post('/api/notes', function(req, res){
     newNote.id = id
     noteList.push(newNote)
     //fs.writeFileSync(dbFile, JSON.stringify(noteList), "utf-8")
-    console.log(noteList)
+    //console.log(noteList)
     res.json(noteList)
 })
 
 // should delete note based on id
-app.delete('api/notes/:id', function(req, res){
+app.delete('/api/notes/:id', function(req, res){
     let deleteId = req.params.id
     noteList = noteList.filter(note => note.id !==deleteId)
     res.send({message: 'Deleted note'})
