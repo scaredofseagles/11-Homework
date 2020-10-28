@@ -26,7 +26,7 @@ As a note-taking web application, I needed to set html and api routes to be able
 
 The following image is an example of the web application's appearance and functionality:
 
-![Image]()
+![Image](public/assets/note-taker-screenshot.png)
 
 ## What I Did
 
@@ -59,7 +59,7 @@ fs.writeFileSync(dbFile, JSON.stringify(noteList))
 
 ## URL
 
-See the web application [here]()
+See the web application [here](https://shrouded-ridge-09224.herokuapp.com/)
 
 ## License
 
