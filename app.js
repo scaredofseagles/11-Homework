@@ -16,10 +16,7 @@ app.use(express.json())
 
 const dbFile = './db/db.json'
 
-// test data
-//let noteList = fs.existsSync(dbFile) ? JSON.stringify(fs.readFileSync(dbFile)) : []
 
-let noteList = []
 // Endpoints
 
 // html routes
@@ -28,32 +25,39 @@ app.get('/notes', function(req, res){
     res.sendFile(__dirname + "/public/notes.html")
 })
 
-// app.get('/', function(req, res){
-//     res.sendFile(__dirname + "/public/index.html")
-// })
+app.get('/', function(req, res){
+    res.sendFile(__dirname + "/public/index.html")
+})
 
 // read db.json file and return all saved notes
 app.get('/api/notes', function(req, res){
-    //let readFile = JSON.parse(fs.readFileSync(dbFile))
-    //console.warn(xhr.responseText)
+    let noteList = JSON.parse(fs.readFileSync(dbFile, "utf-8"))
+
     res.send(noteList)
 })
 
 // add a new notes to db.json
 app.post('/api/notes', function(req, res){
+    let noteList = JSON.parse(fs.readFileSync(dbFile, "utf-8"))
     let id = uuid.v4()
     let newNote = req.body
     newNote.id = id
+
     noteList.push(newNote)
-    //fs.writeFileSync(dbFile, JSON.stringify(noteList), "utf-8")
-    //console.log(noteList)
+    console.log(noteList)
+    fs.writeFileSync(dbFile, JSON.stringify(noteList))
+
     res.json(noteList)
 })
 
 // should delete note based on id
 app.delete('/api/notes/:id', function(req, res){
+    let noteList = JSON.parse(fs.readFileSync(dbFile, "utf-8"))
     let deleteId = req.params.id
+
     noteList = noteList.filter(note => note.id !==deleteId)
+    fs.writeFileSync(dbFile, JSON.stringify(noteList))
+
     res.send({message: 'Deleted note'})
 })
 
