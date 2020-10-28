@@ -16,6 +16,7 @@ app.use(express.json())
 
 const dbFile = './db/db.json'
 
+let noteList = JSON.parse(fs.readFileSync(dbFile, "utf-8"))
 
 // Endpoints
 
@@ -31,14 +32,11 @@ app.get('/', function(req, res){
 
 // read db.json file and return all saved notes
 app.get('/api/notes', function(req, res){
-    let noteList = JSON.parse(fs.readFileSync(dbFile, "utf-8"))
-
     res.send(noteList)
 })
 
 // add a new notes to db.json
 app.post('/api/notes', function(req, res){
-    let noteList = JSON.parse(fs.readFileSync(dbFile, "utf-8"))
     let id = uuid.v4()
     let newNote = req.body
     newNote.id = id
@@ -52,7 +50,6 @@ app.post('/api/notes', function(req, res){
 
 // should delete note based on id
 app.delete('/api/notes/:id', function(req, res){
-    let noteList = JSON.parse(fs.readFileSync(dbFile, "utf-8"))
     let deleteId = req.params.id
 
     noteList = noteList.filter(note => note.id !==deleteId)
